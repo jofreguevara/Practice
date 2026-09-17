@@ -1,0 +1,5 @@
+# Keep empty folders under version control.
+# The actual files land in subsequent sub-changes (model-assets, chat-mvp).
+
+# Bootstrap-toolchain-and-skeleton (this commit)
+placeholder

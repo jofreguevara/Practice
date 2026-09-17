@@ -1,0 +1,23 @@
+# SHA-256 manifest for models/.
+#
+# Each line below is consumed by `capability.verifyModelAssets` at first
+# launch. The path is relative to `FileSystem.documentDirectory` (the
+# rootDir used by the SHA-256 verification pass), so the `models/`
+# prefix is included — it points at the directory the downloader writes
+# into on first launch.
+#
+# Source of truth for binaries: GitHub Releases tag `v1-models`
+# (https://github.com/jofreguevara/Practice/releases/tag/v1-models).
+# The bytes are byte-identical to the previously-bundled copies; only
+# the delivery channel changed.
+#
+# Lookup mirrors (kept for attribution, not used by the downloader):
+#   - ggml-tiny.bin: https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-tiny.bin
+#   - Llama-3.2-1B-Instruct-Q4_K_M.gguf: https://huggingface.co/lmstudio-community/Llama-3.2-1B-Instruct-GGUF/resolve/main/Llama-3.2-1B-Instruct-Q4_K_M.gguf
+#   - Qwen2.5-1.5B-Instruct-Q4_K_M.gguf: https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct-GGUF/resolve/main/qwen2.5-1.5b-instruct-q4_k_m.gguf
+#
+# Generated: 2026-09-15 (Sub-change 2 vendor pass; paths updated for download-on-first-launch)
+
+be07e048e1e599ad46341c8d2a135645097a538221678b7acdd1b1919c6e1b21  models/stt/ggml-tiny.bin
+f7ede42862ceca07ad1c88a97b67520019c4ac7e5ced250d2e696fa62ab189af  models/llm/Llama-3.2-1B-Instruct-Q4_K_M.gguf
+6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e  models/llm/Qwen2.5-1.5B-Instruct-Q4_K_M.gguf

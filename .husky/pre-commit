@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Sub-change 1 (bootstrap) pre-commit gate.
+# Runs TypeScript type-check + ESLint + Jest suite.
+# All three MUST pass before any commit lands on this branch.
+npx --no-install tsc --noEmit && \
+  npx --no-install eslint . && \
+  npm test --silent -- --bail

@@ -1,0 +1,76 @@
+# openspec/config.yaml — SDD bootstrap for practice
+# Greenfield cross-platform mobile application (Android + iOS)
+# for English language practice via offline AI conversation.
+
+schema: spec-driven
+
+context: |
+  Project: practice (cross-platform mobile EN language practice).
+  Stack (planned): TBD — choose in /sdd-explore or /sdd-new
+  (likely React Native + Expo or Flutter; native SDKs absent on host).
+  Architecture constraints: 100% offline-only, free OSS models, local-first storage,
+  lightweight UI with topic images + audio waveform visualization.
+  Functional scope: STT (EN+ES), TTS (EN+ES), LLM conversation agent,
+  local user profile (level, topics, preferences, progress).
+  Workspace state: empty directory, git initialized on `main`,
+  no source files yet (no package.json, pubspec.yaml, ios/, android/, etc.).
+
+rules:
+  proposal:
+    - Every change MUST respect offline-only constraint (no network calls at runtime).
+    - Every change MUST use free / open-source models or libraries only.
+    - Propose target tech stack only when /sdd-new runs the first time.
+  specs:
+    - Use Given/When/Then for scenarios.
+    - Use RFC 2119 keywords (MUST, SHALL, SHOULD, MAY).
+    - Specs for STT/TTS/LLM MUST declare the OSS model/library and locale coverage.
+  design:
+    - Include data flow for offline inference (model load → inference → persistence).
+    - Document where user profile data is stored and how it stays local.
+    - Cover audio capture, waveform rendering, and TTS playback pipelines.
+  tasks:
+    - Group by phase, hierarchical numbering.
+    - Keep tasks completable in one session.
+    - First batch MUST include toolchain bootstrap (framework init, model assets layout).
+  apply:
+    guidelines:
+      - Follow existing code patterns.
+      - Every service entry MUST call assertNoNetwork(label) before any native call.
+      - Profile mutation (level, persona, topics) MUST bump the conversation system-prompt version.
+    tdd: true               # Flipped in Sub-change 1 (Task 1.10). Jest is wired, all subsequent tasks
+                            # land tests alongside production code.
+    test_command: "jest --ci"
+  verify:
+    test_command: "jest --ci"
+    build_command: "tsc --noEmit && eslint ."
+    coverage_threshold: 0
+  archive:
+    - Warn before merging destructive deltas.
+
+# Phase-specific decisions cached at init time. See engram topic `sdd-init/practice`.
+preflight:
+  execution_mode: auto              # chain phases back-to-back on the happy path
+  artifact_store: hybrid            # both engram and openspec/ files
+  delivery_strategy: single-pr      # one PR per feature; size:exception required otherwise
+  review_budget_lines: 800
+
+testing:
+  strict_tdd: true                  # Flipped in Sub-change 1 (Task 1.10). Jest is wired.
+  detected: 2026-09-15
+  detected_layers:
+    unit:        true
+    integration: false
+    e2e:         false
+  coverage:
+    available: false
+  quality:
+    linter:       true                # eslint-config-expo + .eslintrc.js
+    type_checker: true                # tsconfig.json strict mode
+    formatter:    true                # Prettier via .prettierrc
+  notes: |
+    Jest wired in Sub-change 1 (Task 1.4); TDD flipped to true in Task 1.10.
+    Toolchain probe (Linux host):
+      - Node v24.20.0, npm 12.0.2, yarn 1.22.22, pnpm via corepack — present
+      - Python 3.12.3 — present
+      - Java / Kotlin / Gradle / Android SDK / Flutter / Dart / Swift / Xcode / RN CLI — ABSENT
+    Decision belongs to a later phase; this file just records baseline.

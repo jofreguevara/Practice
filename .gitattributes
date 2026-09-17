@@ -1,0 +1,9 @@
+# Git LFS — no model binaries are tracked here anymore.
+#
+# Models are downloaded on first launch from GitHub Releases
+# (https://github.com/jofreguevara/Practice/releases/tag/v1-models) by
+# `app/services/modelDownloader.ts`. The APK stays small (~150 MB instead
+# of ~2 GB) and the working tree no longer carries binary blobs.
+#
+# This file is intentionally a no-op stub — if you re-add LFS for a
+# different file type in the future, append the rules below.

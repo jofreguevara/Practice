@@ -1,0 +1,96 @@
+# ---- OS / IDE ----
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*~
+
+# ---- Logs ----
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ---- Node / JS ----
+node_modules/
+.npm/
+.yarn/
+.pnp.*
+.npmrc.bak
+
+# ---- React Native / Expo ----
+.expo/
+.expo-shared/
+dist/
+web-build/
+*.tsbuildinfo
+.metro-health-check*
+metro.cache/
+
+# ---- Native build artifacts (Android) ----
+android/.gradle/
+android/build/
+android/app/build/
+android/app/release/
+android/app/debug/
+android/local.properties
+android/captures/
+android/.cxx/
+*.apk
+*.aab
+*.aar
+*.ap_
+*.dex
+*.class
+keystores/debug.keystore
+
+# ---- Native build artifacts (iOS) ----
+ios/Pods/
+ios/build/
+ios/DerivedData/
+ios/*.xcworkspace/xcuserdata/
+ios/*.xcodeproj/xcuserdata/
+ios/*.xcodeproj/project.xcworkspace/xcuserdata/
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# ---- Flutter / Dart (if used later) ----
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+
+# ---- Coverage / test artifacts ----
+coverage/
+*.lcov
+.nyc_output/
+
+# ---- Env / secrets ----
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+
+# ---- SDD caches ----
+openspec/.cache/
+
+# ---- Misc ----
+.tmp/
+.cache/
+*.bak
+
+# ---- Model binaries (downloaded from GitHub Releases at runtime) ----
+# Listed in `app/config/modelManifest.ts` and shipped via the GitHub
+# Release tag `v1-models` — DO NOT commit the actual bytes.
+*.gguf
+*.bin
+
+# ---- Agent-time caches (regenerated each session) ----
+.atl/.skill-registry.cache.json
