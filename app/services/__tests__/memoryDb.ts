@@ -1,36 +1,49 @@
 /**
- * Test-only Db adapter backed by better-sqlite3.
- * Exposes the same `execute(sql, params)` shape as the op-sqlite adapter so
- * tests exercise the exact same business logic in db.ts.
+ * Test-only Db adapter backed by Node's built-in `node:sqlite` (stable since
+ * Node 22.5, available in our Node 24 toolchain). Same `execute(sql, params)`
+ * shape as the production op-sqlite adapter so tests exercise the exact
+ * same business logic in db.ts.
+ *
+ * Replaces the previous better-sqlite3 dependency, which requires a C++
+ * postinstall (node-gyp rebuild) that EAS build containers don't have.
  */
-import Database from 'better-sqlite3';
+import { DatabaseSync } from 'node:sqlite';
 
 export interface MemoryDbOptions {
   /** Pre-load statements (e.g. the migration SQL). */
   bootstrap?: string;
 }
 
+interface RawRow {
+  [column: string]: unknown;
+}
+
 export function createMemoryDb(opts: MemoryDbOptions = {}): {
   db: import('../db').Db;
   close: () => void;
   /** Escape hatch for tests: run raw SQL synchronously. */
-  raw: Database.Database;
+  raw: DatabaseSync;
 } {
-  const raw = new Database(':memory:');
-  // Match production PRAGMAs as closely as better-sqlite3 allows.
-  raw.pragma('journal_mode = WAL');
-  raw.pragma('foreign_keys = ON');
+  const raw = new DatabaseSync(':memory:');
+  // Match production PRAGMAs as closely as node:sqlite allows.
+  raw.exec('PRAGMA journal_mode = WAL');
+  raw.exec('PRAGMA foreign_keys = ON');
   if (opts.bootstrap) {
     raw.exec(opts.bootstrap);
   }
   const db: import('../db').Db = {
     async execute(sql: string, params?: ReadonlyArray<unknown>) {
-      const stmt = raw.prepare(sql);
       const isSelect = /^\s*(SELECT|PRAGMA|WITH)\b/i.test(sql);
-      const rows = isSelect
-        ? (stmt.all(...((params ?? []) as unknown[])) as Record<string, unknown>[])
+      // node:sqlite expects SQLInputValue (number | string | bigint | Buffer | null).
+      // Map undefined → null; everything else passes through.
+      const args = ((params ?? []) as Array<number | string | bigint | null>).map(
+        (p) => (p === undefined ? null : p),
+      );
+      const stmt = raw.prepare(sql);
+      const rows: RawRow[] = isSelect
+        ? ((stmt.all(...args) as RawRow[]) ?? [])
         : [];
-      if (!isSelect) stmt.run(...((params ?? []) as unknown[]));
+      if (!isSelect) stmt.run(...args);
       return { rows };
     },
   };
